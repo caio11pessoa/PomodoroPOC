@@ -9,10 +9,14 @@ import Foundation
 import Combine
 
 class PomodoroViewModel: ObservableObject {
-    @Published var clockText: String = "00:00" // Estado para exibir o tempo
+    @Published var clockText: String = "25:00" // Estado para exibir o tempo
+
     private var cancellables = Set<AnyCancellable>()
     var pomodoro = PomodoroSingleton.shared
-
+    var progressCircle: Double {
+        print(pomodoro.clock, "CLOCK")
+        return (Double(25 - pomodoro.clock) / 25) // se atentar a esse 25 aí
+    }
     func startPomodoro() {
         pomodoro.play()
         startClockUpdate()
@@ -26,7 +30,7 @@ class PomodoroViewModel: ObservableObject {
         print("Pomodoro stopped and clock reset")
     }
 
-    func startClockUpdate() {
+    func startClockUpdate() { // Essa lógica está ruim
         // Atualizar o `clockText` em tempo real
         Timer.publish(every: 1, on: .main, in: .common)
             .autoconnect()
@@ -34,7 +38,7 @@ class PomodoroViewModel: ObservableObject {
                 guard let self = self else { return }
                 self.clockText = self.formatTime(seconds: self.pomodoro.clock)
             }
-            .store(in: &cancellables)
+            .store(in: &cancellables) // Entender isso
     }
 
     private func formatTime(seconds: Int) -> String {

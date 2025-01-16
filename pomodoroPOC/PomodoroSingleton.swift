@@ -7,51 +7,28 @@
 
 import Foundation
 
-/*
- class Singleton {
-
-     /// The static field that controls the access to the singleton instance.
-     ///
-     /// This implementation let you extend the Singleton class while keeping
-     /// just one instance of each subclass around.
-     static var shared: Singleton = {
-         let instance = Singleton()
-         // ... configure the instance
-         // ...
-         return instance
-     }()
-
-     /// The Singleton's initializer should always be private to prevent direct
-     /// construction calls with the `new` operator.
-     private init() {}
-
-     /// Finally, any singleton should define some business logic, which can be
-     /// executed on its instance.
-     func someBusinessLogic() -> String {
-         // ...
-         return "Result of the 'someBusinessLogic' call"
-     }
- }
- */
-
-import Foundation
-
 class PomodoroSingleton {
-    var clock: Int = 0
-    var timer: Timer?
+    
+    var clock: Int = 25
     var isRunning: Bool = false
+    private var timer: Timer?
     static let shared = PomodoroSingleton()
     
     private init() {}
     
     func play() {
-        guard !isRunning else { return }
-        isRunning = true
+        guard !isRunning else { return } // Verifica se já começou
+        isRunning = true // seta para isRunning
         
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
             guard let self = self else { return }
-            self.clock += 1
-            print("Clock: \(self.clock)")
+            if self.clock == 0 { // encerra o clock
+                pause()
+                resetClock()
+                return
+            }
+            self.clock -= 1 // Decrementa
+            print("Clock on Singleton: \(self.clock)")
         }
     }
     
@@ -64,8 +41,7 @@ class PomodoroSingleton {
     }
     
     func resetClock() {
-        clock = 0
-        print("Clock reset to 0")
+        clock = 25
+        print("Clock reset to 25")
     }
 }
-

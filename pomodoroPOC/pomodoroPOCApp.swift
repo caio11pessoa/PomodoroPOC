@@ -11,7 +11,6 @@ import SwiftData
 @main
 struct pomodoroPOCApp: App {
 
-
     var body: some Scene {
         WindowGroup {
             ContentView()
