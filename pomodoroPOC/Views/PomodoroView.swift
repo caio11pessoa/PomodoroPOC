@@ -7,35 +7,30 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct PomodoroView: View {
     @StateObject var viewModel = PomodoroViewModel()
-    var backgroundColor = Color(red: 253/255, green: 241/255, blue: 218/255)
     
     var body: some View {
         NavigationStack {
             ZStack {
-                Color(backgroundColor)
+                Color("Background")
                     .ignoresSafeArea()
-                CircularProgressView(percentagem: Double( viewModel.progressCircle))
-                    .animation(.smooth.delay(5), value: viewModel.progressCircle)
+                
+                CircularProgressView(percentagem: viewModel.progressCircle)
+                    .animation(.easeInOut, value: viewModel.progressCircle)
+                
                 VStack {
-                    NavigationLink("Tela2", destination:
-                                    VStack{
-                        Text("Tela2")
-                    }
-                        .navigationTitle(viewModel.clockText)
-                    )
-                    Spacer()
                     ZStack {
                         Text(viewModel.clockText)
                             .font(.custom("Agdasima-Regular", size: 65))
+                            .foregroundStyle(Color("TextColorPrimary"))
                     }
-                    Spacer()
+                    
                     HStack {
                         Button("Começar") {
                             viewModel.startPomodoro()
                         }
-                        .padding()
+                        .padding(8)
                         .background(Color.green)
                         .foregroundColor(.white)
                         .cornerRadius(8)
@@ -43,7 +38,7 @@ struct ContentView: View {
                         Button("Parar") {
                             viewModel.stopPomodoro()
                         }
-                        .padding()
+                        .padding(8)
                         .background(Color.red)
                         .foregroundColor(.white)
                         .cornerRadius(8)
@@ -56,5 +51,5 @@ struct ContentView: View {
 
 
 #Preview {
-    ContentView()
+    PomodoroView()
 }
