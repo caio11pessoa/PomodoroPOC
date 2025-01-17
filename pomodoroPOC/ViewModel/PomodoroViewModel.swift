@@ -21,9 +21,9 @@ class PomodoroViewModel: ObservableObject {
         clockText = ""
         clockText = self.formatTime(seconds: pomodoro.workTime)
         
-        pomodoroSingleton.initialConfig(initialClock: pomodoro.workTime) { clock in
+        pomodoroSingleton.initialConfig(initialClock: pomodoro.workTime) { clock, mili in
             self.clockText = self.formatTime(seconds: clock) // Vincula clockText com clock do singleton
-            self.progressCircle = Double(self.pomodoro.workTime - clock) / Double(self.pomodoro.workTime)
+            self.progressCircle = Double(self.pomodoro.workTime*100 - mili) / Double(self.pomodoro.workTime*100)
         }
     }
     

@@ -27,21 +27,22 @@ struct PomodoroView: View {
                     }
                     
                     HStack {
-                        Button("Começar") {
+                        Button {
                             viewModel.startPomodoro()
+                        } label: {
+                            Image("PausePomodoro")
+                                .resizable()
+                                .frame(width: 26, height: 26)
                         }
-                        .padding(8)
-                        .background(Color.green)
-                        .foregroundColor(.white)
-                        .cornerRadius(8)
+
                         
-                        Button("Parar") {
+                        Button {
                             viewModel.stopPomodoro()
+                        }label: {
+                            Image("StopPomodoro")
+                                .resizable()
+                                .frame(width: 24, height: 26)
                         }
-                        .padding(8)
-                        .background(Color.red)
-                        .foregroundColor(.white)
-                        .cornerRadius(8)
                     }
                 }
             }
