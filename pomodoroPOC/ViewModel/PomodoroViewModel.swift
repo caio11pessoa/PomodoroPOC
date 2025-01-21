@@ -9,39 +9,40 @@ import Foundation
 import Combine
 import SwiftUI
 
-class PomodoroViewModel: ObservableObject {
-    @Published var clockText: String
+class PomodoroViewModel: PomodoroHelpers, ObservableObject {
+    
+    @Published var clockText: String = ""
+    @Published var play: Bool = false
+    @Published var progressCircle: Double = 0
+    
     var pomodoroSingleton = PomodoroSingleton.shared
     var pomodoro: Pomodoro
-    var progressCircle: Double
     
-    init() {
-        pomodoro = Pomodoro(restTime: 30, workTime: 30, Iteration: 1)
-        progressCircle = 0
-        clockText = ""
-        clockText = self.formatTime(seconds: pomodoro.workTime)
+    override init() {
         
-        pomodoroSingleton.initialConfig(initialClock: pomodoro.workTime) { clock, mili in
-            self.clockText = self.formatTime(seconds: clock) // Vincula clockText com clock do singleton
-            self.progressCircle = Double(self.pomodoro.workTime*100 - mili) / Double(self.pomodoro.workTime*100)
+        pomodoro = Pomodoro(restTime: 30, workTime: 30, Iteration: 1)
+        
+        super.init()
+        
+        clockText = formatTime(seconds: pomodoro.workTime)
+        
+        pomodoroSingleton.initialConfig(initialClock: pomodoro.workTime) { clock, clockCentiSeconds in
+            self.clockText = self.formatTime(seconds: clock)
+            
+            self.progressCircle = self.calculateProgressPercentage(
+                totalWorkTime: self.pomodoro.workTime,
+                elapsedCentiSeconds: clockCentiSeconds
+            )
         }
     }
     
-    
-    
-    
     lazy var startPomodoro = pomodoroSingleton.play
+    lazy var pausePomodoro = pomodoroSingleton.pauseClock
     
     func stopPomodoro() {
-        pomodoroSingleton.pause()
+        pomodoroSingleton.pauseClock()
         pomodoroSingleton.resetClock()
-        clockText = self.formatTime(seconds: pomodoro.workTime)
+        clockText = formatTime(seconds: pomodoro.workTime)
         progressCircle = 0
-    }
-    
-    private func formatTime(seconds: Int) -> String {
-        let minutes = seconds / 60
-        let seconds = seconds % 60
-        return String(format: "%02d:%02d", minutes, seconds)
     }
 }

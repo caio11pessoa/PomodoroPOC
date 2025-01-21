@@ -30,7 +30,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		3435207F2D36E8DB00775955 /* Exceptions for "pomodoroPOC" folder in "pomodoroPOC" target */ = {
+		34825DA62D3F042E002AEDB0 /* Exceptions for "pomodoroPOC" folder in "pomodoroPOC" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -40,14 +40,6 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		34351FFC2D35A2A800775955 /* pomodoroPOC */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				3435207F2D36E8DB00775955 /* Exceptions for "pomodoroPOC" folder in "pomodoroPOC" target */,
-			);
-			path = pomodoroPOC;
-			sourceTree = "<group>";
-		};
 		3435200F2D35A2AA00775955 /* pomodoroPOCTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = pomodoroPOCTests;
@@ -56,6 +48,14 @@
 		343520192D35A2AA00775955 /* pomodoroPOCUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = pomodoroPOCUITests;
+			sourceTree = "<group>";
+		};
+		34825D982D3F042E002AEDB0 /* pomodoroPOC */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				34825DA62D3F042E002AEDB0 /* Exceptions for "pomodoroPOC" folder in "pomodoroPOC" target */,
+			);
+			path = pomodoroPOC;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -88,7 +88,7 @@
 		34351FF12D35A2A800775955 = {
 			isa = PBXGroup;
 			children = (
-				34351FFC2D35A2A800775955 /* pomodoroPOC */,
+				34825D982D3F042E002AEDB0 /* pomodoroPOC */,
 				3435200F2D35A2AA00775955 /* pomodoroPOCTests */,
 				343520192D35A2AA00775955 /* pomodoroPOCUITests */,
 				34351FFB2D35A2A800775955 /* Products */,
@@ -121,7 +121,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				34351FFC2D35A2A800775955 /* pomodoroPOC */,
+				34825D982D3F042E002AEDB0 /* pomodoroPOC */,
 			);
 			name = pomodoroPOC;
 			packageProductDependencies = (

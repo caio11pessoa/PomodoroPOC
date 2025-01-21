@@ -28,16 +28,22 @@ struct PomodoroView: View {
                     
                     HStack {
                         Button {
-                            viewModel.startPomodoro()
+                            !viewModel.play ? viewModel.startPomodoro() : viewModel.pausePomodoro()
+                            withAnimation(.easeInOut.speed(0.7)) {
+                                viewModel.play.toggle()
+                            }
                         } label: {
-                            Image("PausePomodoro")
+                            Image(!viewModel.play ? "PlayPomodoro": "PausePomodoro")
                                 .resizable()
                                 .frame(width: 26, height: 26)
                         }
-
+                        
                         
                         Button {
                             viewModel.stopPomodoro()
+                            withAnimation(.easeInOut.speed(0.7)) {
+                                viewModel.play = false
+                            }
                         }label: {
                             Image("StopPomodoro")
                                 .resizable()

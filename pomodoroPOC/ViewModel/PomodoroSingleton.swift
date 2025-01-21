@@ -11,22 +11,20 @@ class PomodoroSingleton {
     
     private var timer: Timer?
     private var isRunning: Bool = false
-    private var initialClock: Int?
-    private var initialClockMili: Int?
-    private init() {}
-    private var clock: Int?
-    private var clockMili: Int?
+    private var initialClockCentiSeconds: Int?
+    private var clockCentiSeconds: Int?
+    private var TrackClock: ((Int, Int) -> Void)? // Dá pra colocar em uma interface
     
+    private init() {}
     static let shared = PomodoroSingleton()
     
-    var updateClock: ((Int, Int) -> Void)? // Dá pra colocar em uma interface
     
-    func initialConfig(initialClock: Int, updateClock: ((Int, Int) -> Void)? = nil) {
-        clock = initialClock
-        clockMili = initialClock * 100
-        self.initialClock = initialClock
-        self.initialClockMili = initialClock * 100
-        self.updateClock = updateClock
+    func initialConfig(initialClock: Int, updateClock: ((Int, Int) -> Void)? = nil) { // Ajeitar a lógica de receber em segundos
+        
+        clockCentiSeconds = initialClock * 100
+        self.initialClockCentiSeconds = initialClock * 100
+        self.TrackClock = updateClock
+
     }
     
     func play() {
@@ -34,46 +32,34 @@ class PomodoroSingleton {
         
         isRunning = true
         
-        // Adaptar para 0.1 segundos :)
-        // ->
-//        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-//            guard let self = self else { return }
-//            guard self.clock != nil else { return } // Clock n inicializado
-//            
-//            if self.clock == 0 {
-//                pause()
-//                resetClock()
-//                return
-//            }
-//            
-//            self.clock! -= 1
-//            
-//            if let updateClock = self.updateClock {
-//                updateClock(self.clock!)
-//            }
-//        }
-        
         timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { [weak self] _ in
+
             guard let self = self else { return }
-            guard self.clock != nil || self.clockMili != nil else { return } // Clock n inicializado
+            guard  self.clockCentiSeconds != nil else { return }
             
-            if self.clockMili == 0 {
-                pause()
+            let isClockOver = self.clockCentiSeconds == 0
+
+            if isClockOver {
+                pauseClock()
                 resetClock()
                 return
             }
+            // 30 * 100 3000 Centseconds
+            // 2999
+            // 2998
+            self.clockCentiSeconds! -= 1
             
-            self.clock! -= 1
-            self.clockMili! -= 1
-            
-            if let updateClock = self.updateClock {
-                let cloc = Double(self.clockMili!)/100
-                updateClock(Int(ceil(cloc)), self.clockMili!)
+            if let TrackClock = self.TrackClock {
+
+                let clockSeconds = Double(self.clockCentiSeconds!)/100
+                let clockSecondsCeil = Int(ceil(clockSeconds))
+
+                TrackClock(clockSecondsCeil, self.clockCentiSeconds!)
             }
         }
     }
     
-    func pause() {
+    func pauseClock() {
         guard isRunning else { return }
         isRunning = false
         
@@ -82,7 +68,6 @@ class PomodoroSingleton {
     }
     
     func resetClock() {
-        clock = initialClock
-        clockMili = initialClockMili
+        clockCentiSeconds = initialClockCentiSeconds
     }
 }
