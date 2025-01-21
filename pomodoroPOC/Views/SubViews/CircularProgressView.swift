@@ -59,3 +59,42 @@ struct CircularProgressView: View {
 #Preview {
     CircularProgressView(percentagem: 0.1)
 }
+
+
+//                    VStack{
+//                        HStack{
+//                            Text("Escolha a duração de trabalho")
+//                                .font(.custom("Agdasima-Bold", size: 30))
+//                                .foregroundStyle(Color("TextColorPrimary"))
+//                            Spacer()
+//                        }
+//                        .padding(.horizontal)
+//                        HStack {
+//                            Text("15min")
+//                            Slider(value: Binding(
+//                                get: { Double(workTime) },
+//                                set: { workTime = Int($0) }
+//                            ), in: 15...60)
+//                            .padding()
+//                            Text("60min")
+//                        }
+//                        .padding(.horizontal)
+//                        Text("\(workTime)min")
+//
+//                        HStack{
+//                            Text("Escolha a duração de Descanso")
+//                            Spacer()
+//                        }
+//                        .padding(.horizontal)
+//                        HStack {
+//                            Text("5min")
+//                            Slider(value: Binding(
+//                                get: { Double(restTime) },
+//                                set: { restTime = Int($0) }
+//                            ), in: 5...30)
+//                            .padding()
+//                            Text("30min")
+//                        }
+//                        .padding(.horizontal)
+//                        Text("\(restTime)min")
+//                    }

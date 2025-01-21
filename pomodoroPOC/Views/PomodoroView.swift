@@ -15,44 +15,101 @@ struct PomodoroView: View {
             ZStack {
                 Color("Background")
                     .ignoresSafeArea()
-                
-                CircularProgressView(percentagem: viewModel.progressCircle)
-                    .animation(.easeInOut, value: viewModel.progressCircle)
-                
                 VStack {
                     ZStack {
-                        Text(viewModel.clockText)
-                            .font(.custom("Agdasima-Regular", size: 65))
+                        
+                        CircularProgressView(percentagem: viewModel.progressCircle)
+                            .animation(.easeInOut, value: viewModel.progressCircle)
+                        
+                        VStack {
+                            Text(viewModel.clockText)
+                                .font(.custom("Agdasima-Regular", size: 65))
+                                .foregroundStyle(Color("TextColorPrimary"))
+                            
+                            HStack {
+                                Button {
+                                    !viewModel.play ? viewModel.startPomodoro() : viewModel.pausePomodoro()
+                                    withAnimation(.easeInOut.speed(0.7)) {
+                                        viewModel.play.toggle()
+                                    }
+                                } label: {
+                                    Image(!viewModel.play ? "PlayPomodoro": "PausePomodoro")
+                                        .resizable()
+                                        .frame(width: 26, height: 26)
+                                }
+                                
+                                Button {
+                                    viewModel.stopPomodoro()
+                                    withAnimation(.easeInOut.speed(0.7)) {
+                                        viewModel.play = false
+                                    }
+                                }label: {
+                                    Image("StopPomodoro")
+                                        .resizable()
+                                        .frame(width: 24, height: 26)
+                                }
+                            }
+                        }
+                    }
+                    Button {
+                        viewModel.sheetIsPresented = true
+                    } label: {
+                        Text("Editar")
+                            .font(.custom("Agdasima-Regular", size: 32))
+                            .foregroundStyle(viewModel.pomodoroEditable ? Color("TextColorPrimary") : .gray)
+                    }.disabled(!viewModel.pomodoroEditable)
+                }
+            }
+            .sheet(isPresented: $viewModel.sheetIsPresented) {
+                ZStack {
+                    Color("Background")
+                        .ignoresSafeArea()
+                    VStack {
+                        Text("Selecione o tempo de trabalho")
+                            .font(.custom("Agdasima-Regular", size: 30))
                             .foregroundStyle(Color("TextColorPrimary"))
-                    }
-                    
-                    HStack {
-                        Button {
-                            !viewModel.play ? viewModel.startPomodoro() : viewModel.pausePomodoro()
-                            withAnimation(.easeInOut.speed(0.7)) {
-                                viewModel.play.toggle()
-                            }
-                        } label: {
-                            Image(!viewModel.play ? "PlayPomodoro": "PausePomodoro")
-                                .resizable()
-                                .frame(width: 26, height: 26)
-                        }
+                            .padding(.top)
                         
-                        
-                        Button {
-                            viewModel.stopPomodoro()
-                            withAnimation(.easeInOut.speed(0.7)) {
-                                viewModel.play = false
+                        Picker("Minutos", selection: $viewModel.workTime) {
+                            ForEach(viewModel.intervaloMinutos, id: \.self) { minuto in
+                                Text("\(minuto) min")
+                                    .tag(minuto)
                             }
-                        }label: {
-                            Image("StopPomodoro")
-                                .resizable()
-                                .frame(width: 24, height: 26)
                         }
+                        .pickerStyle(WheelPickerStyle())
+                        .frame(height: 150)
+                        
+                        Text("Selecione o tempo de descanso")
+                            .font(.custom("Agdasima-Regular", size: 30))
+                            .foregroundStyle(Color("TextColorPrimary"))
+                            .padding(.top)
+                        
+                        Picker("Minutos", selection: $viewModel.restTime) {
+                            ForEach(viewModel.intervaloMinutos, id: \.self) { minuto in
+                                Text("\(minuto) min")
+                                    .tag(minuto)
+                            }
+                        }
+                        .pickerStyle(WheelPickerStyle())
+                        .frame(height: 150)
+                        
+                        Spacer()
+                        
+                        Button(action: {
+                            viewModel.sheetIsPresented = false
+                            viewModel.updateSettings()
+                        }) {
+                            Text("Concluir")
+                                .font(.custom("Agdasima-Regular", size: 42))
+                                .foregroundStyle(Color("TextColorPrimary"))
+                        }
+                        .padding(.top)
                     }
+                    .padding()
                 }
             }
         }
+        
     }
 }
 
