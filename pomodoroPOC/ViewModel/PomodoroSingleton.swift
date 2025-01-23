@@ -12,23 +12,60 @@ class PomodoroSingleton {
     private var timer: Timer?
     private var isRunning: Bool = false
     private var initialClockCentiSeconds: Int?
+    private var initialRestTimeCentiSeconds: Int?
     private var clockCentiSeconds: Int?
-    private var TrackClock: ((Int, Int) -> Void)? // Dá pra colocar em uma interface
+    private var TrackClock: ((Int, Int, Bool) -> Void)? // Dá pra colocar em uma interface
+    var recover: Bool = false
     
     private init() {}
     static let shared = PomodoroSingleton()
     
     
-    func initialConfig(initialClock: Int, updateClock: ((Int, Int) -> Void)? = nil) { // Ajeitar a lógica de receber em segundos
+    func initialConfig(_ pomodoro: Pomodoro, updateClock: ((Int, Int, Bool) -> Void)? = nil) { // Ajeitar a lógica de receber em segundos
         
-        clockCentiSeconds = initialClock * 100
-        self.initialClockCentiSeconds = initialClock * 100
+        clockCentiSeconds = pomodoro.workTime * 100
+        self.initialClockCentiSeconds = pomodoro.workTime * 100
+        self.initialRestTimeCentiSeconds = pomodoro.restTime * 100
         self.TrackClock = updateClock
 
     }
     
     func play() {
         guard !isRunning else { return }
+        recover = false
+        isRunning = true
+        
+        timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { [weak self] _ in
+
+            guard let self = self else { return }
+            guard  self.clockCentiSeconds != nil else { return }
+            
+            let isClockOver = self.clockCentiSeconds == 0
+
+            if isClockOver {
+                recover = true
+                pauseClock()
+                resetClock()
+                playRecover()
+                return
+            }
+
+            self.clockCentiSeconds! -= 1
+            
+            if let TrackClock = self.TrackClock {
+
+                let clockSeconds = Double(self.clockCentiSeconds!)/100
+                let clockSecondsCeil = Int(ceil(clockSeconds))
+
+                TrackClock(clockSecondsCeil, self.clockCentiSeconds!, recover)
+            }
+        }
+    }
+    
+    func playRecover() {
+        guard !isRunning else { return }
+        recover = true
+        
         
         isRunning = true
         
@@ -40,13 +77,12 @@ class PomodoroSingleton {
             let isClockOver = self.clockCentiSeconds == 0
 
             if isClockOver {
+                recover = false
                 pauseClock()
                 resetClock()
                 return
             }
-            // 30 * 100 3000 Centseconds
-            // 2999
-            // 2998
+
             self.clockCentiSeconds! -= 1
             
             if let TrackClock = self.TrackClock {
@@ -54,7 +90,7 @@ class PomodoroSingleton {
                 let clockSeconds = Double(self.clockCentiSeconds!)/100
                 let clockSecondsCeil = Int(ceil(clockSeconds))
 
-                TrackClock(clockSecondsCeil, self.clockCentiSeconds!)
+                TrackClock(clockSecondsCeil, self.clockCentiSeconds!, recover)
             }
         }
     }
@@ -73,6 +109,10 @@ class PomodoroSingleton {
     }
     
     func resetClock() {
-        clockCentiSeconds = initialClockCentiSeconds
+        if recover {
+            clockCentiSeconds = initialRestTimeCentiSeconds
+        }else {
+            clockCentiSeconds = initialClockCentiSeconds
+        }
     }
 }

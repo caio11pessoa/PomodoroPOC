@@ -16,12 +16,16 @@ struct PomodoroView: View {
                 Color("Background")
                     .ignoresSafeArea()
                 VStack {
+                    Text(viewModel.recover ? "Descanse" :"Trabalhe")
+                        .font(.custom("Agdasima-Bold", size: 50))
+                        .foregroundStyle(Color("TextColorPrimary"))
                     ZStack {
                         
                         CircularProgressView(percentagem: viewModel.progressCircle)
                             .animation(.easeInOut, value: viewModel.progressCircle)
                         
                         VStack {
+                            
                             Text(viewModel.clockText)
                                 .font(.custom("Agdasima-Regular", size: 65))
                                 .foregroundStyle(Color("TextColorPrimary"))

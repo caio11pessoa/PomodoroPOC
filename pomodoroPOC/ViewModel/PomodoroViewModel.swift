@@ -14,9 +14,10 @@ class PomodoroViewModel: PomodoroHelpers, ObservableObject {
     @Published var clockText: String = ""
     @Published var play: Bool = false
     @Published var progressCircle: Double = 0
-    @Published var sheetIsPresented: Bool = true
+    @Published var sheetIsPresented: Bool = false
     @Published var workTime: Int = 30
     @Published var restTime: Int = 15
+    @Published var recover: Bool = false
     let intervaloMinutos = stride(from: 5, to: 125, by: 5).map { $0 }
     
     
@@ -27,23 +28,30 @@ class PomodoroViewModel: PomodoroHelpers, ObservableObject {
     
     override init() {
         
-        pomodoro = Pomodoro(restTime: 30, workTime: 60*5, Iteration: 1)
+        pomodoro = Pomodoro(restTime: 30, workTime: 30, Iteration: 1)
         
         super.init()
         
         clockText = formatTime(seconds: pomodoro.workTime)
         
-        pomodoroSingleton.initialConfig(initialClock: pomodoro.workTime) { clock, clockCentiSeconds in
+        pomodoroSingleton.initialConfig(pomodoro) { clock, clockCentiSeconds, recover in
             self.clockText = self.formatTime(seconds: clock)
             
             self.progressCircle = self.calculateProgressPercentage(
                 totalWorkTime: self.pomodoro.workTime,
                 elapsedCentiSeconds: clockCentiSeconds
             )
+            self.recover = recover
         }
     }
     
-    lazy var startPomodoro = pomodoroSingleton.play
+    func startPomodoro() {
+        if recover {
+            pomodoroSingleton.playRecover()
+        }else {
+            pomodoroSingleton.play()
+        }
+    }
     lazy var pausePomodoro = pomodoroSingleton.pauseClock
     
     func stopPomodoro() {
