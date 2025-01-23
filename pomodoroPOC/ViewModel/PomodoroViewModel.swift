@@ -20,10 +20,8 @@ class PomodoroViewModel: PomodoroHelpers, ObservableObject {
     let intervaloMinutos = stride(from: 5, to: 125, by: 5).map { $0 }
     
     
-    var pomodoroEditable: Bool {
-        play != true
-    }
-     
+    var pomodoroEditable: Bool { !play }
+    
     var pomodoroSingleton = PomodoroSingleton.shared
     var pomodoro: Pomodoro
     
@@ -56,8 +54,9 @@ class PomodoroViewModel: PomodoroHelpers, ObservableObject {
     }
     
     func updateSettings() {
-        pomodoro.workTime = workTime
-        pomodoro.restTime = restTime
-        clockText = formatTime(seconds: pomodoro.workTime)
+        pomodoro.workTime = workTime*60
+        pomodoro.restTime = restTime*60
+        pomodoroSingleton.updateClock(pomodoro: pomodoro)
+        clockText = formatTime(seconds: workTime*60)
     }
 }

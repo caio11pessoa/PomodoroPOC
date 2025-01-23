@@ -93,7 +93,6 @@ struct PomodoroView: View {
                         .pickerStyle(WheelPickerStyle())
                         .frame(height: 150)
                         
-                        Spacer()
                         
                         Button(action: {
                             viewModel.sheetIsPresented = false
@@ -103,6 +102,7 @@ struct PomodoroView: View {
                                 .font(.custom("Agdasima-Regular", size: 42))
                                 .foregroundStyle(Color("TextColorPrimary"))
                         }
+                        .frame(maxHeight: .infinity, alignment: .bottom)
                         .padding(.top)
                     }
                     .padding()

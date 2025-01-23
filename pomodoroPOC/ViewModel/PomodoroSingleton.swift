@@ -67,6 +67,11 @@ class PomodoroSingleton {
         timer = nil
     }
     
+    func updateClock(pomodoro: Pomodoro){
+        initialClockCentiSeconds = pomodoro.workTime * 100
+        resetClock()
+    }
+    
     func resetClock() {
         clockCentiSeconds = initialClockCentiSeconds
     }
