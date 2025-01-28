@@ -46,15 +46,20 @@ class PomodoroViewModel: PomodoroHelpers, ObservableObject {
     }
     
     func startPomodoro() {
+        self.play = true
         if recover {
             pomodoroSingleton.playRecover()
         }else {
             pomodoroSingleton.play()
         }
     }
-    lazy var pausePomodoro = pomodoroSingleton.pauseClock
+    func pausePomodoro() {
+        self.play = false
+        pomodoroSingleton.pauseClock()
+    }
     
     func stopPomodoro() {
+        self.play = false
         pomodoroSingleton.pauseClock()
         pomodoroSingleton.resetClock()
         clockText = formatTime(seconds: pomodoro.workTime)

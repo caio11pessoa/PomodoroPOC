@@ -10,7 +10,7 @@ import Foundation
 class PomodoroSingleton {
     
     private var timer: Timer?
-    private var isRunning: Bool = false
+    var isRunning: Bool = false
     private var initialClockCentiSeconds: Int?
     private var initialRestTimeCentiSeconds: Int?
     private var clockCentiSeconds: Int?
@@ -80,6 +80,13 @@ class PomodoroSingleton {
                 recover = false
                 pauseClock()
                 resetClock()
+                if let TrackClock = self.TrackClock {
+
+                    let clockSeconds = Double(self.clockCentiSeconds!)/100
+                    let clockSecondsCeil = Int(ceil(clockSeconds))
+
+                    TrackClock(clockSecondsCeil, self.clockCentiSeconds!, recover)
+                }
                 return
             }
 
@@ -98,6 +105,8 @@ class PomodoroSingleton {
     func pauseClock() {
         guard isRunning else { return }
         isRunning = false
+        print("PAUSE \(isRunning)")
+//        updateIsRunning(isRunning)
         
         timer?.invalidate()
         timer = nil

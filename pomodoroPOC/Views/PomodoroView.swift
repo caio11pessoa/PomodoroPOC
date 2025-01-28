@@ -13,42 +13,43 @@ struct PomodoroView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Color("Background")
+                Color(viewModel.recover ? "BackgroundRest" :  "Background")
                     .ignoresSafeArea()
                 VStack {
-                    Text(viewModel.recover ? "Descanse" :"Trabalhe")
-                        .font(.custom("Agdasima-Bold", size: 50))
-                        .foregroundStyle(Color("TextColorPrimary"))
                     ZStack {
                         
-                        CircularProgressView(percentagem: viewModel.progressCircle)
+                        CircularProgressView(percentagem: viewModel.progressCircle, isWorking: !viewModel.recover)
                             .animation(.easeInOut, value: viewModel.progressCircle)
                         
                         VStack {
                             
                             Text(viewModel.clockText)
                                 .font(.custom("Agdasima-Regular", size: 65))
-                                .foregroundStyle(Color("TextColorPrimary"))
+                                .foregroundStyle(Color(viewModel.recover ? "TextColorPrimaryRest" :  "TextColorPrimary"))
                             
                             HStack {
                                 Button {
                                     !viewModel.play ? viewModel.startPomodoro() : viewModel.pausePomodoro()
                                     withAnimation(.easeInOut.speed(0.7)) {
-                                        viewModel.play.toggle()
+//                                        viewModel.play.toggle() // Errado
                                     }
                                 } label: {
-                                    Image(!viewModel.play ? "PlayPomodoro": "PausePomodoro")
-                                        .resizable()
-                                        .frame(width: 26, height: 26)
+                                    Image(
+                                        !viewModel.play ?
+                                        viewModel.recover ? "PlayPomodoroRest" : "PlayPomodoro":
+                                            viewModel.recover ? "PausePomodoroRest" : "PausePomodoro"
+                                    )
+                                    .resizable()
+                                    .frame(width: 26, height: 26)
                                 }
                                 
                                 Button {
                                     viewModel.stopPomodoro()
                                     withAnimation(.easeInOut.speed(0.7)) {
-                                        viewModel.play = false
+//                                        viewModel.play = false
                                     }
                                 }label: {
-                                    Image("StopPomodoro")
+                                    Image(viewModel.recover ? "StopPomodoroRest" : "StopPomodoro")
                                         .resizable()
                                         .frame(width: 24, height: 26)
                                 }
@@ -60,18 +61,18 @@ struct PomodoroView: View {
                     } label: {
                         Text("Editar")
                             .font(.custom("Agdasima-Regular", size: 32))
-                            .foregroundStyle(viewModel.pomodoroEditable ? Color("TextColorPrimary") : .gray)
+                            .foregroundStyle(viewModel.pomodoroEditable ? Color(viewModel.recover ? "TextColorPrimaryRest" :  "TextColorPrimary") : .gray)
                     }.disabled(!viewModel.pomodoroEditable)
                 }
             }
             .sheet(isPresented: $viewModel.sheetIsPresented) {
                 ZStack {
-                    Color("Background")
+                    Color(viewModel.recover ? "BackgroundRest" :  "Background")
                         .ignoresSafeArea()
                     VStack {
                         Text("Selecione o tempo de trabalho")
                             .font(.custom("Agdasima-Regular", size: 30))
-                            .foregroundStyle(Color("TextColorPrimary"))
+                            .foregroundStyle(Color(viewModel.recover ? "TextColorPrimaryRest" :  "TextColorPrimary"))
                             .padding(.top)
                         
                         Picker("Minutos", selection: $viewModel.workTime) {
@@ -85,7 +86,7 @@ struct PomodoroView: View {
                         
                         Text("Selecione o tempo de descanso")
                             .font(.custom("Agdasima-Regular", size: 30))
-                            .foregroundStyle(Color("TextColorPrimary"))
+                            .foregroundStyle(Color(viewModel.recover ? "TextColorPrimaryRest" :  "TextColorPrimary"))
                             .padding(.top)
                         
                         Picker("Minutos", selection: $viewModel.restTime) {
@@ -104,7 +105,7 @@ struct PomodoroView: View {
                         }) {
                             Text("Concluir")
                                 .font(.custom("Agdasima-Regular", size: 42))
-                                .foregroundStyle(Color("TextColorPrimary"))
+                                .foregroundStyle(Color(viewModel.recover ? "TextColorPrimaryRest" :  "TextColorPrimary"))
                         }
                         .frame(maxHeight: .infinity, alignment: .bottom)
                         .padding(.top)
