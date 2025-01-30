@@ -34,7 +34,7 @@ class PomodoroViewModel: PomodoroHelpers, ObservableObject {
         
         clockText = formatTime(seconds: pomodoro.workTime)
         
-        pomodoroSingleton.initialConfig(pomodoro) { clock, clockCentiSeconds, recover in
+        pomodoroSingleton.initialConfig(pomodoro) { clock, clockCentiSeconds, recover, isRunning in
             self.clockText = self.formatTime(seconds: clock)
             
             self.progressCircle = self.calculateProgressPercentage(
@@ -42,6 +42,7 @@ class PomodoroViewModel: PomodoroHelpers, ObservableObject {
                 elapsedCentiSeconds: clockCentiSeconds
             )
             self.recover = recover
+            self.play = isRunning
         }
     }
     
