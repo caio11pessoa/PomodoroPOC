@@ -28,21 +28,23 @@ class PomodoroViewModel: PomodoroHelpers, ObservableObject {
     
     override init() {
         
-        pomodoro = Pomodoro(restTime: 30, workTime: 30, Iteration: 1)
+        pomodoro = Pomodoro(restTime: 15, workTime: 30, Iteration: 1)
         
         super.init()
         
         clockText = formatTime(seconds: pomodoro.workTime)
         
         pomodoroSingleton.initialConfig(pomodoro) { clock, clockCentiSeconds, recover, isRunning in
-            self.clockText = self.formatTime(seconds: clock)
+            let pomodoroViewModel = self
             
-            self.progressCircle = self.calculateProgressPercentage(
-                totalWorkTime: self.pomodoro.workTime,
+            pomodoroViewModel.clockText = pomodoroViewModel.formatTime(seconds: clock)
+            
+            pomodoroViewModel.progressCircle = pomodoroViewModel.calculateProgressPercentage(
+                totalWorkTime: pomodoroViewModel.recover ? pomodoroViewModel.pomodoro.restTime:  pomodoroViewModel.pomodoro.workTime,
                 elapsedCentiSeconds: clockCentiSeconds
             )
-            self.recover = recover
-            self.play = isRunning
+            pomodoroViewModel.recover = recover
+            pomodoroViewModel.play = isRunning
         }
     }
     
