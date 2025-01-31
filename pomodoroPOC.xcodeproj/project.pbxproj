@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		3402DB682D4D120F00CD6292 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3402DB672D4D120F00CD6292 /* Localizable.xcstrings */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		3435200D2D35A2AA00775955 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -24,6 +28,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3402DB672D4D120F00CD6292 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		34351FFA2D35A2A800775955 /* pomodoroPOC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = pomodoroPOC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3435200C2D35A2AA00775955 /* pomodoroPOCTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = pomodoroPOCTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		343520162D35A2AA00775955 /* pomodoroPOCUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = pomodoroPOCUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -88,6 +93,7 @@
 		34351FF12D35A2A800775955 = {
 			isa = PBXGroup;
 			children = (
+				3402DB672D4D120F00CD6292 /* Localizable.xcstrings */,
 				34351FFC2D35A2A800775955 /* pomodoroPOC */,
 				3435200F2D35A2AA00775955 /* pomodoroPOCTests */,
 				343520192D35A2AA00775955 /* pomodoroPOCUITests */,
@@ -205,6 +211,8 @@
 			knownRegions = (
 				en,
 				Base,
+				"pt-BR",
+				"es-419",
 			);
 			mainGroup = 34351FF12D35A2A800775955;
 			minimizedProjectReferenceProxies = 1;
@@ -225,6 +233,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3402DB682D4D120F00CD6292 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,6 +350,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -397,6 +407,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

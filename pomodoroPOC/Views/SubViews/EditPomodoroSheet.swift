@@ -14,12 +14,12 @@ struct EditPomodoroSheet: View {
             viewModel.backgroundColor
                 .ignoresSafeArea()
             VStack {
-                Text("Selecione o tempo de trabalho")
+                Text("FocusTimeSelect")
                     .font(viewModel.agdasimaRegularFont(size: 30))
                     .foregroundStyle(viewModel.textColor)
                     .padding(.top)
                 
-                Picker("Minutos", selection: $viewModel.workTime) {
+                Picker("Minutes", selection: $viewModel.workTime) {
                     ForEach(viewModel.intervaloMinutos, id: \.self) { minuto in
                         Text("\(minuto) min")
                             .tag(minuto)
@@ -28,12 +28,12 @@ struct EditPomodoroSheet: View {
                 .pickerStyle(WheelPickerStyle())
                 .frame(height: 150)
                 
-                Text("Selecione o tempo de descanso")
+                Text("RestTimeSelect")
                     .font(viewModel.agdasimaRegularFont(size: 30))
                     .foregroundStyle(viewModel.textColor)
                     .padding(.top)
                 
-                Picker("Minutos", selection: $viewModel.restTime) {
+                Picker("Minutes", selection: $viewModel.restTime) {
                     ForEach(viewModel.intervaloMinutos, id: \.self) { minuto in
                         Text("\(minuto) min")
                             .tag(minuto)
@@ -47,7 +47,7 @@ struct EditPomodoroSheet: View {
                     viewModel.sheetIsPresented = false
                     viewModel.updateSettings()
                 }) {
-                    Text("Concluir")
+                    Text("FinishButton")
                         .font(viewModel.agdasimaRegularFont(size: 42))
                         .foregroundStyle(viewModel.textColor)
                 }

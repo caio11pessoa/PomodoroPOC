@@ -53,7 +53,7 @@ struct PomodoroView: View {
                     Button {
                         viewModel.sheetIsPresented = true
                     } label: {
-                        Text("Editar")
+                        Text("EditButton", comment: "Text for edit button" )
                             .font(viewModel.agdasimaRegularFont(size: 32))
                             .foregroundStyle(viewModel.pomodoroEditable ? viewModel.textColor : .gray)
                     }.disabled(!viewModel.pomodoroEditable)
