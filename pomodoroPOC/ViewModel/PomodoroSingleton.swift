@@ -10,7 +10,7 @@ import Foundation
 class PomodoroSingleton {
     
     private var timer: Timer?
-    private var timeUnitSelected: Int = TimeUnit.centisecond.rawValue
+    private var timeUnitSelected: Int = TimeUnit.decisecond.rawValue
     var isRunning: Bool = false
     private var initialClockCentiSeconds: Int?
     private var initialRestTimeCentiSeconds: Int?

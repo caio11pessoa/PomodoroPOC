@@ -32,7 +32,7 @@ class PomodoroViewModel: PomodoroHelpers, ObservableObject {
     
     override init() {
         
-        pomodoro = Pomodoro(restTime: 15, workTime: 30, Iteration: 1)
+        pomodoro = Pomodoro(restTime: 60*5, workTime: 60*25, Iteration: 1)
         
         super.init()
         
