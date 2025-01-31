@@ -13,7 +13,7 @@ struct PomodoroView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Color(viewModel.recover ? "BackgroundRest" :  "Background")
+                viewModel.backgroundColor
                     .ignoresSafeArea()
                 VStack {
                     ZStack {
@@ -24,8 +24,8 @@ struct PomodoroView: View {
                         VStack {
                             
                             Text(viewModel.clockText)
-                                .font(.custom("Agdasima-Regular", size: 65))
-                                .foregroundStyle(Color(viewModel.recover ? "TextColorPrimaryRest" :  "TextColorPrimary"))
+                                .font(viewModel.agdasimaRegularFont(size: 64))
+                                .foregroundStyle(viewModel.textColor)
                             
                             HStack {
                                 Button {
@@ -54,58 +54,13 @@ struct PomodoroView: View {
                         viewModel.sheetIsPresented = true
                     } label: {
                         Text("Editar")
-                            .font(.custom("Agdasima-Regular", size: 32))
-                            .foregroundStyle(viewModel.pomodoroEditable ? Color(viewModel.recover ? "TextColorPrimaryRest" :  "TextColorPrimary") : .gray)
+                            .font(viewModel.agdasimaRegularFont(size: 32))
+                            .foregroundStyle(viewModel.pomodoroEditable ? viewModel.textColor : .gray)
                     }.disabled(!viewModel.pomodoroEditable)
                 }
             }
             .sheet(isPresented: $viewModel.sheetIsPresented) {
-                ZStack {
-                    Color(viewModel.recover ? "BackgroundRest" :  "Background")
-                        .ignoresSafeArea()
-                    VStack {
-                        Text("Selecione o tempo de trabalho")
-                            .font(.custom("Agdasima-Regular", size: 30))
-                            .foregroundStyle(Color(viewModel.recover ? "TextColorPrimaryRest" :  "TextColorPrimary"))
-                            .padding(.top)
-                        
-                        Picker("Minutos", selection: $viewModel.workTime) {
-                            ForEach(viewModel.intervaloMinutos, id: \.self) { minuto in
-                                Text("\(minuto) min")
-                                    .tag(minuto)
-                            }
-                        }
-                        .pickerStyle(WheelPickerStyle())
-                        .frame(height: 150)
-                        
-                        Text("Selecione o tempo de descanso")
-                            .font(.custom("Agdasima-Regular", size: 30))
-                            .foregroundStyle(Color(viewModel.recover ? "TextColorPrimaryRest" :  "TextColorPrimary"))
-                            .padding(.top)
-                        
-                        Picker("Minutos", selection: $viewModel.restTime) {
-                            ForEach(viewModel.intervaloMinutos, id: \.self) { minuto in
-                                Text("\(minuto) min")
-                                    .tag(minuto)
-                            }
-                        }
-                        .pickerStyle(WheelPickerStyle())
-                        .frame(height: 150)
-                        
-                        
-                        Button(action: {
-                            viewModel.sheetIsPresented = false
-                            viewModel.updateSettings()
-                        }) {
-                            Text("Concluir")
-                                .font(.custom("Agdasima-Regular", size: 42))
-                                .foregroundStyle(Color(viewModel.recover ? "TextColorPrimaryRest" :  "TextColorPrimary"))
-                        }
-                        .frame(maxHeight: .infinity, alignment: .bottom)
-                        .padding(.top)
-                    }
-                    .padding()
-                }
+                EditPomodoroSheet(viewModel: viewModel)
             }
         }
         

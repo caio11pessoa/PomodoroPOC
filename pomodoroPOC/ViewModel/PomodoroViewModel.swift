@@ -20,6 +20,10 @@ class PomodoroViewModel: PomodoroHelpers, ObservableObject {
     @Published var recover: Bool = false
     let intervaloMinutos = stride(from: 5, to: 125, by: 5).map { $0 }
     
+    var textColor: Color {Color(recover ? "TextColorPrimaryRest" :  "TextColorPrimary")}
+    var backgroundColor: Color {Color(recover ? "BackgroundRest" :  "Background")}
+    func agdasimaRegularFont(size: CGFloat) -> Font {Font.custom("Agdasima-Regular", size: size)}
+    
     
     var pomodoroEditable: Bool { !play }
     
