@@ -10,6 +10,7 @@ import Foundation
 class PomodoroSingleton {
     
     private var timer: Timer?
+    private var timeUnitSelected: Int = TimeUnit.centisecond.rawValue
     var isRunning: Bool = false
     private var initialClockCentiSeconds: Int?
     private var initialRestTimeCentiSeconds: Int?
@@ -23,9 +24,9 @@ class PomodoroSingleton {
     
     func initialConfig(_ pomodoro: Pomodoro, updateClock: ((Int, Int, Bool, Bool) -> Void)? = nil) { // Ajeitar a lógica de receber em segundos
         
-        clockCentiSeconds = pomodoro.workTime * 10
-        self.initialClockCentiSeconds = pomodoro.workTime * 10
-        self.initialRestTimeCentiSeconds = pomodoro.restTime * 10
+        clockCentiSeconds = pomodoro.workTime * timeUnitSelected
+        self.initialClockCentiSeconds = pomodoro.workTime * timeUnitSelected
+        self.initialRestTimeCentiSeconds = pomodoro.restTime * timeUnitSelected
         self.TrackClock = updateClock
         
     }
@@ -35,7 +36,7 @@ class PomodoroSingleton {
         recover = false
         isRunning = true
         
-        timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
+        timer = Timer.scheduledTimer(withTimeInterval: CGFloat(1/timeUnitSelected.toDouble()), repeats: true) { [weak self] _ in
             
             guard let self = self else { return }
             guard  self.clockCentiSeconds != nil else { return }
@@ -54,7 +55,7 @@ class PomodoroSingleton {
             
             if let TrackClock = self.TrackClock {
                 
-                let clockSeconds = Double(self.clockCentiSeconds!)/10
+                let clockSeconds = self.clockCentiSeconds!.toDouble()/timeUnitSelected.toDouble()
                 let clockSecondsCeil = Int(ceil(clockSeconds))
                 
                 TrackClock(clockSecondsCeil, self.clockCentiSeconds!, recover, isRunning)
@@ -69,7 +70,7 @@ class PomodoroSingleton {
         
         isRunning = true
         
-        timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
+        timer = Timer.scheduledTimer(withTimeInterval: CGFloat(1/timeUnitSelected.toDouble()), repeats: true) { [weak self] _ in
             
             guard let self = self else { return }
             guard  self.clockCentiSeconds != nil else { return }
@@ -82,7 +83,7 @@ class PomodoroSingleton {
                 resetClock()
                 if let TrackClock = self.TrackClock {
                     
-                    let clockSeconds = Double(self.clockCentiSeconds!)/10
+                    let clockSeconds = self.clockCentiSeconds!.toDouble()/timeUnitSelected.toDouble()
                     let clockSecondsCeil = Int(ceil(clockSeconds))
                     
                     TrackClock(clockSecondsCeil, self.clockCentiSeconds!, recover, isRunning)
@@ -94,7 +95,7 @@ class PomodoroSingleton {
             
             if let TrackClock = self.TrackClock {
                 
-                let clockSeconds = Double(self.clockCentiSeconds!)/10
+                let clockSeconds = self.clockCentiSeconds!.toDouble()/timeUnitSelected.toDouble()
                 let clockSecondsCeil = Int(ceil(clockSeconds))
                 
                 TrackClock(clockSecondsCeil, self.clockCentiSeconds!, recover, isRunning)
@@ -105,15 +106,14 @@ class PomodoroSingleton {
     func pauseClock() {
         guard isRunning else { return }
         isRunning = false
-        print("PAUSE \(isRunning)")
         
         timer?.invalidate()
         timer = nil
     }
     
     func updateClock(pomodoro: Pomodoro){
-        initialClockCentiSeconds = pomodoro.workTime * 10
-        initialRestTimeCentiSeconds = pomodoro.restTime * 10
+        initialClockCentiSeconds = pomodoro.workTime * timeUnitSelected
+        initialRestTimeCentiSeconds = pomodoro.restTime * timeUnitSelected
         resetClock()
     }
     

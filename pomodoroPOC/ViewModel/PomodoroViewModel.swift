@@ -18,7 +18,7 @@ class PomodoroViewModel: PomodoroHelpers, ObservableObject {
     @Published var workTime: Int = 30
     @Published var restTime: Int = 15
     @Published var recover: Bool = false
-    let intervaloMinutos = stride(from: 5, to: 125, by: 5).map { $0 }
+    let intervaloMinutos = stride(from: 5, to: 65, by: 5).map { $0 }
     
     var textColor: Color {Color(recover ? "TextColorPrimaryRest" :  "TextColorPrimary")}
     var backgroundColor: Color {Color(recover ? "BackgroundRest" :  "Background")}
@@ -42,13 +42,13 @@ class PomodoroViewModel: PomodoroHelpers, ObservableObject {
             let pomodoroViewModel = self
             
             pomodoroViewModel.clockText = pomodoroViewModel.formatTime(seconds: clock)
-            
-            pomodoroViewModel.progressCircle = pomodoroViewModel.calculateProgressPercentage(
-                totalWorkTime: pomodoroViewModel.recover ? pomodoroViewModel.pomodoro.restTime:  pomodoroViewModel.pomodoro.workTime,
-                elapsedCentiSeconds: clockCentiSeconds
-            )
             pomodoroViewModel.recover = recover
             pomodoroViewModel.play = isRunning
+            
+            pomodoroViewModel.progressCircle = pomodoroViewModel.calculateProgressPercentage(
+                totalWorkTime: recover ? pomodoroViewModel.pomodoro.restTime:  pomodoroViewModel.pomodoro.workTime,
+                elapsedCentiSeconds: clockCentiSeconds
+            )
         }
     }
     
